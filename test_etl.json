@@ -1,0 +1,39 @@
+{
+  "name": "ETL",
+  "description": "Things happen.",
+  "notes": "Stuff goes down.",
+  "processes": [
+    {
+      "name": "Process 1",
+      "description": "This is Process 1",
+      "steps": [
+        {
+          "name": "Process 1 Step 1",
+          "description": "Stuff happens",
+          "file": "./cypher/cypher_1.cql"
+        },
+        {
+          "name": "Process 1 Step 2",
+          "description": "Stuff happens here too",
+          "file": "./cypher/cypher_2.cql"
+        }
+      ]
+    },
+    {
+      "name": "Process 2",
+      "description": "This is Process 2",
+      "steps": [
+        {
+          "name": "Process 2 Step 1",
+          "description": "Stuff agin happens",
+          "file": "./cypher/cypher_3.cql"
+        },
+        {
+          "name": "Process 2 Step 2",
+          "description": "Stuff happens here too again",
+          "file": "./cypher/cypher_4.cql"
+        }
+      ]
+    }
+  ]
+}

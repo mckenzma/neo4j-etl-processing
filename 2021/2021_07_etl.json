@@ -1,0 +1,59 @@
+{
+  "name": "ETL",
+  "year": 2021,
+  "month": 7,
+  "description": "Things happen.",
+  "notes": "Stuff goes down.",
+  "processes": [
+    {
+      "name": "Process 1",
+      "description": "This is Process 1",
+      "steps": [
+        {
+          "name": "Process 1 Step 1",
+          "description": "Stuff happens",
+          "file": "./cypher/cypher_1.cql",
+          "query": "MATCH (n)\nRETURN n",
+          "status": "Complete",
+          "start": "2021-07-01T12:00:00.000",
+          "end": "2021-07-01T13:15:30.500"
+        },
+        {
+          "name": "Process 1 Step 2",
+          "description": "Stuff happens here too",
+          "file": "./cypher/cypher_2.cql",
+          "query": "MATCH (n:Label)\nWITH ##StringReplace## AS string\nRETURN count(*)",
+          "status": "Complete",
+          "start": "2021-07-01T12:00:00.000",
+          "end": "2021-07-01T13:15:30.500"
+        }
+      ],
+      "status": "Complete"
+    },
+    {
+      "name": "Process 2",
+      "description": "This is Process 2",
+      "steps": [
+        {
+          "name": "Process 2 Step 1",
+          "description": "Stuff agin happens",
+          "file": "./cypher/cypher_3.cql",
+          "query": "MATCH (n:Label2)\nWITH $param AS param\nSET n.prop = param",
+          "status": "Error",
+          "start": "2021-07-01T12:00:00.000",
+          "end": "2021-07-01T13:15:30.500"
+        },
+        {
+          "name": "Process 2 Step 2",
+          "description": "Stuff happens here too again",
+          "file": "./cypher/cypher_4.cql",
+          "query": "CREATE (n:Label3)\nWITH n\nSET n.prop2 = \"diff\"",
+          "status": "Complete",
+          "start": "2021-07-01T12:00:00.000",
+          "end": "2021-07-01T13:15:30.500"
+        }
+      ],
+      "status": "Complete"
+    }
+  ]
+}
