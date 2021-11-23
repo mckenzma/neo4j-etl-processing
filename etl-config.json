@@ -1,0 +1,21 @@
+{
+  "name": "ETL",
+  "description": "This runs multiple queries",
+  "queries": [
+    {
+      "name": "Query 1",
+      "description": "This runs something",
+      "file": "query_1.cql"
+    },
+    {
+      "name": "Query 2",
+      "description": "This runs something else",
+      "file": "query_2.cql"
+    },
+    {
+      "name": "Query 3",
+      "description": "This should generate an error",
+      "file": "query_3.cql"
+    }
+  ]
+}
