@@ -13,9 +13,14 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 # RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
 #    && rm -rf /tmp/pip-tmp
 
+RUN wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
+RUN echo 'deb https://debian.neo4j.com stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends docker.io
+    && apt-get -y install --no-install-recommends docker.io neo4j neo4j-client 
+    #openjdk-11-jre
+
+ 
 
 
 
