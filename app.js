@@ -5,6 +5,7 @@ const fs = require('fs');
 // import etl config file
 let etl_config = fs.readFileSync('test_etl.json');
 let etl = JSON.parse(etl_config);
+
 // import config file for Month-Year of ETL run
 let conf = JSON.parse(fs.readFileSync('./2021/2021_07_conf.json'));
 
@@ -18,10 +19,6 @@ let file_name = [conf.year,
                 ].join('_');
 file_name = file_name + '.json';
 
-// console.log(file_name);
-
-// let updatedETL = etl;
-// let updatedETL = {...conf,...etl};
 let updatedETL = {
   name: etl.name,
   year: conf.year,
@@ -45,9 +42,9 @@ if (!fs.existsSync(dir)){
 
 for (var i=0;i<etl.processes.length;i++){
   for (var j=0;j<etl.processes[i].steps.length;j++){
+    
     // get cypher from file
     var cypher = fs.readFileSync(etl.processes[i].steps[j].file, 'utf-8');
-    // console.log(cypher)
 
     etl.processes[i].steps[j].query = cypher;
     // etl.processes[i].steps[j].query = cypher.split('\r\n');
@@ -65,7 +62,6 @@ for (var i=0;i<etl.processes.length;i++){
     etl.processes[i].steps[j].status = (i !== j && j === 0 ) ? "Error" : "Complete";
     etl.processes[i].steps[j].start = '2021-07-01T12:00:00.000';
     etl.processes[i].steps[j].end = '2021-07-01T13:15:30.500';
-    // etl.processes[i].steps[j].metrics = 
   }
 }
 
