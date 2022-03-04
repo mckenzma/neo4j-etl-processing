@@ -39,7 +39,7 @@ const driver = neo4j.driver(
 const asyncFunction = async (query,j) => {
     const session = driver.session();
 
-    const start = Date.now();
+    const start = new Date().toISOString();
 
     // run query
     await session
@@ -60,8 +60,8 @@ const asyncFunction = async (query,j) => {
       //   // etl.queries[j].output = obj;
       // })
 
-      const end = Date.now();
-      console.log(start,end, Date());
+      const end = new Date().toISOString();
+      // console.log(start,end, Date());
 
       // etl.queries[j].result = result;
       etl.queries[j].start = start;
