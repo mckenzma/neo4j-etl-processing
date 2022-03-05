@@ -1,9 +1,1 @@
-CALL apoc.periodic.iterate(
-  '
-  UNWIND range(1,10,1) AS int
-  RETURN int
-  ','
-  MERGE (n:Test_2 {id: int})
-  ',
-  {batchSize:1}
-)
+MERGE (n:Test_2 {id: 1})-[:IS_CONNECTED_TO]->(m:Another {id: 0})
