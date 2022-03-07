@@ -36,41 +36,53 @@ const driver = neo4j.driver(
   neo4j.auth.basic('neo4j', 'password')
 );
 
-const asyncFunction = async (query,j) => {
-    const session = driver.session();
+// TODO - write check for database connection
 
-    const start = new Date().toISOString();
+const processQuery = async (query,j) => {
+  const session = driver.session();
 
-    // run query
-    await session
-    .run(query)
-    .then(result => {
-      const end = new Date().toISOString();
+  // console.log(session);
 
-      // TODO need to format result better
-      etl.queries[j].start = start;
-      etl.queries[j].end = end;
-      etl.queries[j].status = 'Complete'
-      // This is the easiest way but seems expensive in terms of keeping all of the info
-      etl.queries[j].result = result;
-      generateFile(file);
-    })
-    .catch(error => {
-      const end = new Date().toISOString();
-      etl.queries[j].start = start;
-      etl.queries[j].end = end;
-      etl.queries[j].status = 'Error';
-      // can we extract extra info regarding specifics about the error
-      etl.queries[j].result = { error, message: error.message, query: query }
-    })
-    .then(() => session.close())
+  const start = new Date().toISOString();
+
+  // run query
+  await session
+  .run(query)
+  .then(result => {
+    const end = new Date().toISOString();
+    console.log("Success");
+    etl.queries[j].start = start;
+    etl.queries[j].end = end;
+    etl.queries[j].status = 'Complete'
+    // This is the easiest way but seems expensive in terms of keeping all of the info
+    etl.queries[j].result = result;
+    generateFile(file);
+  })
+  .catch(error => {
+    const end = new Date().toISOString();
+    console.log("Error");
+    etl.queries[j].start = start;
+    etl.queries[j].end = end;
+    etl.queries[j].status = 'Error';
+    // can we extract extra info regarding specifics about the error
+    etl.queries[j].result = { error, message: error.message, query: query }
+    generateFile(file);
+  })
+  .then(() => session.close())
 }
 
-for (var j=0;j<queryFiles.length;j++) {
-  const query = fs.readFileSync('./cypher/' + queryFiles[j].file, 'utf-8').toString();
-  
-  asyncFunction(query,j);
+const runAll = async () => {
+  for (var j=0;j<queryFiles.length;j++) {
+    const query = fs.readFileSync('./cypher/' + queryFiles[j].file, 'utf-8').toString();
+    console.log(`Processing ${queryFiles[j].file}`);
+    // refresh ui
+    await processQuery(query,j);
+    console.log(`Complete ${queryFiles[j].file}`);
+    // refresh ui
+  }
 }
+
+// Note: If you kill process while running it kills at the queries running
 
 // on application exit:
-driver.close();
+runAll().then(() => driver.close());
