@@ -5,5 +5,5 @@ CALL apoc.periodic.iterate(
   ','
   MERGE (n:Test_2 {id: int})-[:IS_CONNECTED_TO]->(m:Another {id: int})
   ',
-  {batchSize:1}
+  {batchSize:100}
 )
