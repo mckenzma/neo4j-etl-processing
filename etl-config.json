@@ -3,6 +3,11 @@
   "description": "This runs multiple queries",
   "queries": [
     {
+      "name": "Query 0",
+      "description": "This empties the db",
+      "file": "query_0.cql"
+    },
+    {
       "name": "Query 1",
       "description": "This runs something",
       "file": "query_1.cql"
