@@ -12,8 +12,12 @@
       "description": "This runs something",
       "file": "query_1.cql",
       "parameters": [
-        "val1",
-        "val2"
+        {
+          "value": "val1"
+        },
+        {
+          "value": "val2"
+        }
       ]
     },
     {
