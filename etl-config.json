@@ -10,7 +10,11 @@
     {
       "name": "Query 1",
       "description": "This runs something",
-      "file": "query_1.cql"
+      "file": "query_1.cql",
+      "parameters": [
+        "val1",
+        "val2"
+      ]
     },
     {
       "name": "Query 2",
