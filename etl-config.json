@@ -13,10 +13,10 @@
       "file": "query_1.cql",
       "parameters": [
         {
-          "value": "val1"
+          "value": "1"
         },
         {
-          "value": "val2"
+          "value": "2"
         }
       ]
     },
