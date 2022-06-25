@@ -46,17 +46,22 @@ const processQuery = async (query,j,parameter,paramIndex) => {
 
   // TODO - need to set param value to replace (##SOMETHING##)
 
+  // TODO - need to get set query status to error if apoc.periodic.iterate has error
+  // at the moment it sets value as 'Success' which is incorrect
+
   let regex = new RegExp(/\#\#PARAM\#\#/,'g');
 
-  //console.log(query.replace(regex,parameter));
+  // console.log(query.replace(regex,parameter));
 
   // run query
   await session
   // TODO pass in parameter into query
-  .run(query)
+  .run(query.replace(regex,parameter))
   .then(result => {
     
     const end = new Date().toISOString();
+
+    console.log(result.records);
     
     if (parameter === null) {
       etl.queries[j].start = start;
