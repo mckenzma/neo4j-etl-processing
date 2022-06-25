@@ -5,12 +5,14 @@
     {
       "name": "Query 0",
       "description": "This empties the db",
-      "file": "query_0.cql"
+      "file": "query_0.cql",
+      "queryType": "Full"
     },
     {
       "name": "Query 1",
       "description": "This runs something",
       "file": "query_1.cql",
+      "queryType": "Delta",
       "parameters": [
         {
           "value": "1"
@@ -23,12 +25,14 @@
     {
       "name": "Query 2",
       "description": "This runs something else",
-      "file": "query_2.cql"
+      "file": "query_2.cql",
+      "queryType": "Full"
     },
     {
       "name": "Query 3",
       "description": "This should generate an error",
-      "file": "query_3.cql"
+      "file": "query_3.cql",
+      "queryType": "Full"
     }
   ]
 }
