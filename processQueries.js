@@ -139,18 +139,41 @@ const runAll = async () => {
     
     if (queryFiles[j].status !== 'Complete') {
       let parameters = queryFiles[j].parameters;
+      let dependencyFlag = true;
+
+      if (queryFiles[j].dependencies !== undefined) {
+        for (let i = 0; i < queryFiles[j].dependencies.length; i++ ) {
+          let dependency = queryFiles.find(obj => obj.name === queryFiles[j].dependencies[i].name)
+          if (dependency === undefined) {
+            dependencyFlag = false;
+          } else if (dependency.status !== 'Complete') {
+            dependencyFlag = false;
+          }
+          // console.log(dependency);
+        }
+      }
       
       if (parameters === undefined) {
         if (queryFiles[j].status !== 'Complete') {
           console.log("No parameters...");
-          await processQuery(query,j,null,null);
+          // check if a dependency is present and complete
+          if (dependencyFlag === true) {
+            await processQuery(query,j,null,null);
+          } else {
+            console.log("Dependencies not complete. Aborting...");
+          }
         }
       } else {
         console.log("Iterate over params");
         for (let i = 0; i < parameters.length; i++) {
           if (parameters[i].status !== 'Complete') {
             console.log(`Processing parameter: ${parameters[i].value}`);
-            await processQuery(query,j,parameters[i],i);
+            // check if a dependency is present and complete
+            if (dependencyFlag === true) {
+              await processQuery(query,j,parameters[i],i);
+            } else {
+              console.log("Dependencies not complete. Aborting...");
+            }
           }
         }
       }
