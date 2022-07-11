@@ -42,6 +42,8 @@ const processQuery = async (query,j,parameter,paramIndex) => {
   const session = driver.session();
   const start = new Date().toISOString();
 
+  // console.log(parameter,paramIndex);
+
   // TODO - set query to running
 
   // TODO - need to set param value to replace (##SOMETHING##)
@@ -61,26 +63,43 @@ const processQuery = async (query,j,parameter,paramIndex) => {
     
     const end = new Date().toISOString();
 
-    console.log(result.records);
-    
+    // console.log(Object.keys(result.records[0]._fields[7]).length === 0);
+    // console.log(result.records[0]._fields[8]);
+    // console.log(result.records[0]);
+    // console.log(`......${parameter}`);
     if (parameter === null) {
       etl.queries[j].start = start;
       etl.queries[j].end = end;
-      etl.queries[j].status = 'Complete'
+      etl.queries[j].status = 'Complete';
       // This is the easiest way but seems expensive in terms of keeping all of the info
       // etl.queries[j].result = result;
     } else {
-      etl.queries[j].parameters[paramIndex].start = start;
-      etl.queries[j].parameters[paramIndex].end = end;
-      etl.queries[j].parameters[paramIndex].status = 'Complete'
-      // This is the easiest way but seems expensive in terms of keeping all of the info
-      // etl.queries[j].parameters[paramIndex].result = result;
+      // this is to catch errors when using apoc.periodic.iterate
+      if (Object.keys(result.records[0]._fields[7]).length !== 0) {
+        etl.queries[j].parameters[paramIndex].start = start;
+        etl.queries[j].parameters[paramIndex].end = end;
+        etl.queries[j].parameters[paramIndex].status = 'Error';
+        // This is the easiest way but seems expensive in terms of keeping all of the info
+        // etl.queries[j].parameters[paramIndex].result = result;
 
-      let flag = etl.queries[j].parameters.find(param => param.status !== 'Complete')
-      
-      if (flag === undefined) {
-        etl.queries[j].status = 'Complete'
+        delete etl.queries[j].start;
+      } else {
+        etl.queries[j].parameters[paramIndex].start = start;
+        etl.queries[j].parameters[paramIndex].end = end;
+        etl.queries[j].parameters[paramIndex].status = 'Complete';
+        // This is the easiest way but seems expensive in terms of keeping all of the info
+        // etl.queries[j].parameters[paramIndex].result = result;
       }
+
+      // let flag = etl.queries[j].parameters.find(param => param.status !== 'Complete')
+      // console.log(flag);
+      if (queries[j].parameters.find(param => param.status !== 'Complete') === undefined) {
+        etl.queries[j].status = 'Complete';
+      } else if (queries[j].parameters.find(param => param.status === 'Error') !== undefined) {
+        etl.queries[j].status = 'Error';
+      }
+
+      
 
     }
 
@@ -97,6 +116,13 @@ const processQuery = async (query,j,parameter,paramIndex) => {
     // can we extract extra info regarding specifics about the error
     // etl.queries[j].result = { error, message: error.message, query: query }
     
+    // this is to remove "start", "end" from query objects that has errors in the 
+    // parameter arrays. This should prob be done a different way
+    if (parameter !== null) {
+      delete etl.queries[j].start;
+      delete etl.queries[j].end;
+    }
+
     // TODO need to check status of all parameter runs to set main query status
     
     generateFile(file);
