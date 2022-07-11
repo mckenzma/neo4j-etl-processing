@@ -33,6 +33,12 @@
       "description": "This should generate an error",
       "file": "query_3.cql",
       "queryType": "Full"
+    },
+    {
+      "name": "Query 4",
+      "description": "This depends on Query 3 completing successfully",
+      "file": "query_4.cql",
+      "queryType": "Full"
     }
   ]
 }
