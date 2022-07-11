@@ -38,7 +38,12 @@
       "name": "Query 4",
       "description": "This depends on Query 3 completing successfully",
       "file": "query_4.cql",
-      "queryType": "Full"
+      "queryType": "Full",
+      "dependencies": [
+        {
+          "name": "Query 4"
+        }
+      ]
     }
   ]
 }
