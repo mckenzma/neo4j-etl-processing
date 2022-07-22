@@ -51,6 +51,8 @@ const processQuery = async (query,j,parameter,paramIndex) => {
   // TODO - need to get set query status to error if apoc.periodic.iterate has error
   // at the moment it sets value as 'Success' which is incorrect
 
+  // TODO - check if full or detla. if full always rerun
+
   let regex = new RegExp(/\#\#PARAM\#\#/,'g');
 
   // console.log(query.replace(regex,parameter));
@@ -137,11 +139,12 @@ const runAll = async () => {
     const query = fs.readFileSync('./cypher/' + queryFiles[j].file, 'utf-8').toString();
     console.log(`Processing ${queryFiles[j].file}`);
     
-    if (queryFiles[j].status !== 'Complete') {
+    if (queryFiles[j].status !== 'Complete' && queryFiles[j].queryType === 'Full') {
       let parameters = queryFiles[j].parameters;
       let dependencyFlag = true;
 
       if (queryFiles[j].dependencies !== undefined) {
+        console.log("Checking dependencies...");
         for (let i = 0; i < queryFiles[j].dependencies.length; i++ ) {
           let dependency = queryFiles.find(obj => obj.name === queryFiles[j].dependencies[i].name)
           if (dependency === undefined) {
