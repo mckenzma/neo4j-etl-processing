@@ -1,0 +1,48 @@
+```mermaid
+%%{ init : { "flowchart" : { "curve" : "linear" }}}%%
+
+flowchart TD
+  %% Steps
+  start([Start App])
+  appRunning[/App Running/]
+  loadEtlFile[Load ETL File]
+  exit
+  getQueryObj
+  checkQueryObjType{Check Query Object Type}
+  setQueryStatusNew
+  checkQueryStatus
+  checkDependencies
+  getNextQueryObj
+  checkQueryType
+  sleep
+  checkSQL
+  checkNeo4jDb
+  processQuery
+  captureResults[/Capture Results/]
+
+  
+  %% Connections
+  start --> appRunning
+  start --> loadEtlFile
+  loadEtlFile -- Error --> exit
+  loadEtlFile -- Success --> getQueryObj
+  getQueryObj --> checkQueryObjType
+  checkQueryObjType -- Full --> setQueryStatusNew
+  checkQueryObjType -- Delta --> checkQueryStatus
+  setQueryStatusNew --> checkDependencies
+  checkQueryStatus -- New --> checkDependencies
+  checkQueryStatus -- Error --> getNextQueryObj
+  checkQueryStatus -- Complete --> getNextQueryObj
+  getNextQueryObj --> getQueryObj
+  checkDependencies -- All 'Complete' --> checkQueryType
+  checkDependencies -- 'Complete' + 'Processing' --> sleep
+  sleep --> checkDependencies
+  checkDependencies -- Any 'Error' --> getNextQueryObj
+  checkDependencies -- Any 'New' --> getNextQueryObj
+  checkQueryType -- Import --> checkSQL
+  checkQueryType -- Else --> checkNeo4jDb
+  checkSQL -- Success --> checkNeo4jDb
+  checkSQL -- Error --> exit
+  checkNeo4jDb -- Error --> exit
+  checkNeo4jDb -- Success --> processQuery --> captureResults
+```
