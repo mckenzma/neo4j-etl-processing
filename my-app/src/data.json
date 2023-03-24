@@ -1,0 +1,11 @@
+{
+  "array": [
+    {
+      "property": "value 1"
+    },
+    {
+      "property": "value 2"
+    }
+  ],
+  "property": "another value"
+}
