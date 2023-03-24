@@ -1,6 +1,5 @@
 import logo from './logo.svg';
 import './App.css';
-// import data from './data.json';
 import data from './data_1.json';
 // import data from '../../etl-config.json';
 // import data from 'etl-config.json';
