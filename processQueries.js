@@ -39,6 +39,8 @@ const driver = neo4j.driver(
 // TODO - write check for database connection
 
 const processQuery = async (query,j,parameter,paramIndex) => {
+  // console.log(driver.verifyConnectivity());
+  // console.log(driver.verifyConnectivity('neo4j').error);
   const session = driver.session();
   const start = new Date().toISOString();
 
